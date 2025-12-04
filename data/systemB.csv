@@ -1,0 +1,5 @@
+id,date,amount,curr,counterparty,instrument
+A101,2025-01-05,100000,USD,Goldman  Sachs,FX Spot
+A102,2025-01-05,56000,USD,J.P. Morgan,Equity
+TRX-989,2025-01-06,78000,EUR,DeutscheBank,Bond
+A104,2025-01-06,219500,USD,Morgan-Stanley,Derivatives
