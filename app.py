@@ -178,6 +178,7 @@ def run_reconciliation(central_norm: pd.DataFrame, sources_norm: dict, pk: str):
 st.title("Trade Reconciliation Workbench")
 st.markdown("**LLM-Powered • Explainable • Human-in-the-Loop**")
 
+st.sidebar.header("Built by Team LoopexAI")
 st.sidebar.success("Accenture FS GenAI Hackathon 2025")
 
 # 1. Upload
