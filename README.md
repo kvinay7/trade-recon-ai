@@ -19,40 +19,21 @@ This reduces hours of manual work into seconds and brings explainability and con
 
 **2. Canonical Schema Inference:** “When we pick the Golden Source, the LLM looks at just five sample rows and infers a canonical trade schema. This schema is used to normalize every other source without manual configuration.”
 
-  - Highlights:
-    - LLM is invoked through ChatOpenAI with a custom model (google/gemini-2.0-flash)
-    - Strict Pydantic parsing avoids hallucinations
-    - Schema guarantees consistent downstream operations
-
 **3. Column Mapping + Normalization:** “When we click Run Reconciliation, each source dataset is converted into the canonical model.”
-  - The LLM maps non-standard fields such as:
-    - TradeID → trade_id
-    - Amt → amount
-    - CP → counterparty
-    - Instr → instrument
-  - Then a deterministic normalization step fixes formats for:
-    - dates
-    - currencies
-    - string case
-    - numeric amounts
-    - and counterparty formatting
 
-**4. Reconciliation Engine:** “We categorize trades into three buckets:
-    - Exact Matches – clean alignment
-    - Partial Matches – values differ (calls LLM for explanation)
-    - Unmatched – no corresponding trade found”
-  Matching uses deterministic hash lookups on primary key."
+**4. Reconciliation Engine:** We categorize trades into three buckets:
+    - Exact Matches: clean alignment (Matches using deterministic hash lookups on primary key)
+    - Partial Matches: values differ (calls LLM for explanation)
+    - Unmatched: no corresponding trade found
 
-**5. LLM Explainability:** “The LLM compares the two records field-by-field and generates:
+**5. LLM Explainability:** The LLM compares the two records field-by-field and generates:
    - a short explanations
    - a yes/no/maybe verdict
    - a confidence score
    - a one-sentence summary
-  This turns raw mismatches into actionable narratives, reducing analyst investigation time.”
 
 **6. Human-in-the-Loop Analyst Workflow:** “We enforce mandatory analyst remarks. Every decision is stored in state and associated with that specific record. This brings accountability, auditability, and enables downstream compliance workflows.”
 
 **7. Final Export:** “At the end, analysts export a fully reconciled Excel report. This forms a ready-to-submit regulatory audit file.”
 
 **8. Closing Statement:** “Our solution delivers data harmonization, reconciliation, explainability, and auditability in one workflow. It dramatically reduces reconciliation time and increases middle-office accuracy.”
-
