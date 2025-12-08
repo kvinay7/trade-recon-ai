@@ -22,9 +22,9 @@ This reduces hours of manual work into seconds and brings explainability and con
 **3. Column Mapping + Normalization:** “When we click Run Reconciliation, each source dataset is converted into the canonical model.”
 
 **4. Reconciliation Engine:** We categorize trades into three buckets:
-    - Exact Matches: clean alignment (Matches using deterministic hash lookups on primary key)
-    - Partial Matches: values differ (calls LLM for explanation)
-    - Unmatched: no corresponding trade found
+   - Exact Matches: clean alignment (Matches using deterministic hash lookups on primary key)
+   - Partial Matches: values differ (calls LLM for explanation)
+   - Unmatched: no corresponding trade found
 
 **5. LLM Explainability:** The LLM compares the two records field-by-field and generates:
    - a short explanations
@@ -37,3 +37,4 @@ This reduces hours of manual work into seconds and brings explainability and con
 **7. Final Export:** “At the end, analysts export a fully reconciled Excel report. This forms a ready-to-submit regulatory audit file.”
 
 **8. Closing Statement:** “Our solution delivers data harmonization, reconciliation, explainability, and auditability in one workflow. It dramatically reduces reconciliation time and increases middle-office accuracy.”
+
