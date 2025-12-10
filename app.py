@@ -255,185 +255,176 @@ if st.session_state.recon_results:
     st.markdown("---")
     st.header("Analyst Dashboard")
 
+    # --- Metrics Calculation ---
     all_df = pd.concat(st.session_state.recon_results.values(), ignore_index=True)
     total = len(all_df)
     exact = len(all_df[all_df["Type"] == "Exact Match"])
     partial = len(all_df[all_df["Type"] == "Partial Match"])
     unmatched = len(all_df[all_df["Type"] == "Unmatched"])
-    decided = sum(1 for v in st.session_state.decisions.values() if v is not None)
+    decided_count = sum(1 for v in st.session_state.decisions.values() if v is not None)
+    pending_count = total - decided_count
 
+    # --- Top Level Metrics ---
     c1, c2, c3, c4, c5 = st.columns(5)
     c1.metric("Total Records", total)
-    c2.metric("Exact Match", exact)
-    c3.metric("Partial Match", partial)
+    c2.metric("Exact Matches", exact)
+    c3.metric("Partial Matches", partial)
     c4.metric("Unmatched", unmatched)
-    c5.metric("Analyst Decisions", decided)
-
-
+    c5.metric("Pending Review", pending_count, delta=f"{decided_count} Done", delta_color="inverse")
 
 # ================================================================
-# 🔎 RECORD-BY-RECORD ANALYST REVIEW + EXPORT (with remarks)
+# 🔎 RECORD-BY-RECORD ANALYST REVIEW + EXPORT (Grouped & Filtered)
 # ================================================================
 
 if st.session_state.recon_results:
+    
+    st.divider()
+    
+    # 1. VIEW FILTER
+    col_filter, col_pad = st.columns([1, 3])
+    with col_filter:
+        view_mode = st.radio(
+            "🔎 Review Status Filter:", 
+            ["Pending", "Completed", "Show All"],
+            horizontal=True
+        )
 
     if "analyst_remarks" not in st.session_state:
-        st.session_state.analyst_remarks = {}   # key → string
+        st.session_state.analyst_remarks = {}
 
-    for src_name, df in st.session_state.recon_results.items():
+    # 2. SOURCE FILE TABS
+    # Create a tab for each source file to keep UI clean
+    src_names = list(st.session_state.recon_results.keys())
+    tabs = st.tabs([f"📄 {name}" for name in src_names])
 
-        with st.expander(f"{src_name} – {len(df)} records", expanded=False):
+    for i, src_name in enumerate(src_names):
+        with tabs[i]:
+            df = st.session_state.recon_results[src_name]
+            
+            # --- FILTERING LOGIC ---
+            # We map the external decision state to the local dataframe for filtering
+            df["_decision"] = [st.session_state.decisions.get((src_name, idx), "Pending") for idx in df.index]
 
-            for idx, row in df.iterrows():
+            if view_mode == "Pending Review":
+                filtered_df = df[df["_decision"] == "Pending"]
+            elif view_mode == "Completed (Accepted/Rejected)":
+                filtered_df = df[df["_decision"].isin(["Accepted", "Rejected"])]
+            else:
+                filtered_df = df
 
-                key = (src_name, idx)
-                decision = st.session_state.decisions.get(key, "Pending")
-                remarks = st.session_state.analyst_remarks.get(key, "")
+            if filtered_df.empty:
+                st.info(f"No records found for filter: **{view_mode}**")
+                continue
 
-                confidence = float(row.get("Confidence", 0.0))
-                color_map = {
-                    "Exact Match": "green",
-                    "Value Break": "orange",
-                    "Unmatched": "red",
-                    "Accepted": "blue",
-                    "Rejected": "gray"
-                }
-                color = color_map.get(decision if decision != "Pending" else row["Type"], "gray")
+            # --- GROUPING LOGIC ---
+            # We separate the filtered data into 3 buckets
+            df_partial = filtered_df[filtered_df["Type"] == "Partial Match"]
+            df_unmatched = filtered_df[filtered_df["Type"] == "Unmatched"]
+            df_exact = filtered_df[filtered_df["Type"] == "Exact Match"]
+            
+            # Create Sub-Tabs for Match Types
+            t_partial, t_unmatched, t_exact = st.tabs([
+                f"⚠️ Partial Matches ({len(df_partial)})",
+                f"❌ Unmatched ({len(df_unmatched)})",
+                f"✅ Exact Matches ({len(df_exact)})"
+            ])
 
-                st.markdown(
-                    f"#### Record: {idx} \n"
-                    f"**Match: {row['Type']}, Confidence: {confidence:.0%}**",
-                    unsafe_allow_html=True
-                )
+            # Helper function to render a list of cards
+            def render_cards(sub_df):
+                for idx, row in sub_df.iterrows():
+                    key = (src_name, idx)
+                    decision = st.session_state.decisions.get(key, "Pending")
+                    remarks = st.session_state.analyst_remarks.get(key, "")
+                    
+                    # Card Container
+                    with st.container(border=True):
+                        # Header
+                        c_head1, c_head2 = st.columns([3, 1])
+                        with c_head1:
+                            st.subheader(f"Row {idx}")
+                        with c_head2:
+                            # Status Badge
+                            if decision == "Accepted":
+                                st.success("Accepted")
+                            elif decision == "Rejected":
+                                st.error("Rejected")
+                            else:
+                                st.warning("Pending")
 
-                # -------------------------
-                # SIDE-BY-SIDE PANEL
-                # -------------------------
-                col_left, col_right = st.columns([1, 1])
+                        # Data Comparison
+                        c_left, c_right = st.columns(2)
+                        with c_left:
+                            st.caption("Source Record")
+                            st.json(row["Source_Data"])
+                        with c_right:
+                            st.caption("Central Record (Best Match)")
+                            st.json(row["Central_Data"])
 
-                with col_left:
-                    st.markdown("**Source Record**")
-                    st.json(row["Source_Data"], expanded=True)
+                        # AI Explanation (Only show if it exists)
+                        if row["Explanation"]:
+                            st.info(f"**🤖 AI Insight:**\n\n{row['Explanation']}")
 
-                with col_right:
-                    st.markdown("**Central Record**")
-                    st.json(row["Central_Data"], expanded=True)
+                        # Actions
+                        with st.expander("📝 Analyst Decision & Remarks", expanded=(decision=="Pending")):
+                            new_rmk = st.text_area("Remarks", value=remarks, key=f"rmk_{src_name}_{idx}", height=70)
+                            st.session_state.analyst_remarks[key] = new_rmk
+                            
+                            b1, b2, _ = st.columns([1, 1, 4])
+                            if b1.button("Accept", key=f"acc_{src_name}_{idx}", type="primary"):
+                                st.session_state.decisions[key] = "Accepted"
+                                st.rerun()
+                            if b2.button("Reject", key=f"rej_{src_name}_{idx}"):
+                                st.session_state.decisions[key] = "Rejected"
+                                st.rerun()
 
-                # LLM Explanation
-                st.markdown("### 🤖 LLM Explanation")
-                st.markdown(row["Explanation"])
+            # Render Groups
+            with t_partial:
+                if df_partial.empty: st.caption("No partial matches in this view.")
+                render_cards(df_partial)
 
-                # -------------------------
-                # Analyst Remarks (MANDATORY)
-                # -------------------------
-                decision = st.session_state.decisions.get(key, None)
+            with t_unmatched:
+                if df_unmatched.empty: st.caption("No unmatched records in this view.")
+                render_cards(df_unmatched)
 
-                # Show dynamic status badge
-                if decision == "Accepted":
-                    st.markdown("### Analyst Remarks ✔️ *(Accepted)*", unsafe_allow_html=True)
-                elif decision == "Rejected":
-                    st.markdown("### Analyst Remarks ❌ *(Rejected)*", unsafe_allow_html=True)
-                else:
-                    st.markdown("### Analyst Remarks ⏳ *(Pending)*", unsafe_allow_html=True)
-                
-                new_remarks = st.text_area(
-                    f"Remarks for {key}",
-                    value=remarks,
-                    key=f"remarks_{src_name}_{idx}",
-                    placeholder="Explain the reason for accepting or rejecting this match…"
-                )
-
-                # Save remarks immediately
-                st.session_state.analyst_remarks[key] = new_remarks
-
-                # -------------------------
-                # Accept / Reject Buttons
-                # -------------------------
-                colA, colB = st.columns(2)
-
-                with colA:
-                    if st.button("Accept", key=f"acc_{src_name}_{idx}", type="primary", use_container_width=True):
-                        if new_remarks.strip() == "":
-                            st.error("Remarks required before accepting.")
-                        else:
-                            st.session_state.decisions[key] = "Accepted"
-                            st.success("Record accepted.")
-                        st.rerun()
-
-                with colB:
-                    if st.button("Reject", key=f"rej_{src_name}_{idx}", type="secondary", use_container_width=True):
-                        if new_remarks.strip() == "":
-                            st.error("Remarks required before rejection.")
-                        else:
-                            st.session_state.decisions[key] = "Rejected"
-                            st.warning("Record rejected.")
-                        st.rerun()
-
-                st.markdown("---")
+            with t_exact:
+                if df_exact.empty: st.caption("No exact matches in this view.")
+                # For exact matches, we might want a denser list view since they need less review
+                render_cards(df_exact)
 
     # ============================================================
-    # 🚀 EXPORT: Includes Analyst Remarks + Decision
+    # 🚀 EXPORT
     # ============================================================
     def export_to_excel() -> bytes:
         output = BytesIO()
-
         with pd.ExcelWriter(output, engine="openpyxl") as writer:
-
             wrote_any_sheet = False
-
             for src_name, df in st.session_state.recon_results.items():
-                if df is None or df.empty:
-                    continue
-
-                # --- Create empty export df ---
-                export_df = pd.DataFrame()
-
-                # Safe sheet name
-                safe_name = "".join(
-                    c if c not in r'\/*?[]:' else "_" for c in src_name
-                ).strip()[:31]
-
-                if not safe_name:
-                    safe_name = "Sheet1"
-
-            # ----------------------------
-            # Build export_df from df
-            # ----------------------------
-
-            # JSON fields
+                if df is None or df.empty: continue
+                
+                # Prepare Export Data
+                export_df = df.copy()
                 export_df["Source_JSON"] = df["Source_Data"].apply(json.dumps)
-                export_df["Central_JSON"] = df["Central_Data"].apply(
-                    lambda x: json.dumps(x) if x else ""
-                )
+                export_df["Central_JSON"] = df["Central_Data"].apply(lambda x: json.dumps(x) if x else "")
+                
+                # Map Decisions & Remarks
+                export_df["Analyst_Decision"] = [st.session_state.decisions.get((src_name, i), "Pending") for i in df.index]
+                export_df["Analyst_Remarks"] = [st.session_state.analyst_remarks.get((src_name, i), "") for i in df.index]
+                
+                # Clean columns for export
+                cols_to_export = ["Type", "Confidence", "Analyst_Decision", "Analyst_Remarks", "Explanation", "Source_JSON", "Central_JSON"]
+                export_df = export_df[cols_to_export]
 
-            # LLM output fields
-                export_df["Match_Type"] = df["Type"]
-                export_df["Confidence_Score"] = df["Confidence"] if "Confidence" in df else 0.0
-                export_df["LLM_Explanation"] = df["Explanation"] if "Explanation" in df else ""
-
-            # Analyst fields
-                export_df["Analyst_Remarks"] = df.index.map(
-                    lambda i: st.session_state.analyst_remarks.get((src_name, i), "")
-                )
-
-                export_df["Analyst_Decision"] = df.index.map(
-                    lambda i: st.session_state.decisions.get((src_name, i), "Pending")
-                )
-
-            # Write sheet
-                export_df.to_excel(writer, sheet_name=safe_name, index=False)
+                safe_name = "".join(c if c not in r'\/*?[]:' else "_" for c in src_name)[:31]
+                export_df.to_excel(writer, sheet_name=safe_name or "Sheet1", index=False)
                 wrote_any_sheet = True
-
-        # Ensure at least one visible sheet (prevents IndexError)
+            
             if not wrote_any_sheet:
-                pd.DataFrame({"info": ["No data"]}).to_excel(
-                    writer, sheet_name="Empty", index=False
-                )
-
+                pd.DataFrame({"info": ["No data"]}).to_excel(writer, sheet_name="Empty", index=False)
+                
         output.seek(0)
         return output.getvalue()
 
-
+    st.divider()
     st.download_button(
         label="📥 Download Full Reconciliation Report (Excel)",
         data=export_to_excel(),
