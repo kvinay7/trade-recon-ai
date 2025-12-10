@@ -305,9 +305,9 @@ if st.session_state.recon_results:
             # We map the external decision state to the local dataframe for filtering
             df["_decision"] = [st.session_state.decisions.get((src_name, idx), "Pending") for idx in df.index]
 
-            if view_mode == "Pending Review":
+            if view_mode == "Pending":
                 filtered_df = df[df["_decision"] == "Pending"]
-            elif view_mode == "Completed (Accepted/Rejected)":
+            elif view_mode == "Completed":
                 filtered_df = df[df["_decision"].isin(["Accepted", "Rejected"])]
             else:
                 filtered_df = df
