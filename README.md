@@ -85,11 +85,10 @@ Responsibilities:
 
 ### 5️⃣ Deterministic Matching
 
-- Compare records using **primary key only**
 - Generate:
   - Matched  
   - Unmatched  
-  - Ambiguous (schema-level)  
+  - Ambiguous
 
 ---
 
@@ -99,9 +98,6 @@ Responsibilities:
   - Why records did not match
   - Which fields differ semantically
   - Potential mapping or data issues
-- Reasoning is shown to analysts for faster review
-
-📌 AI output is explanatory only.
 
 ---
 
@@ -194,6 +190,7 @@ Used only for:
 ---
 
 ## 📐 Development Philosophy
+
 
 
 
