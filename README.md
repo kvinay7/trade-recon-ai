@@ -8,8 +8,6 @@ A deterministic-first, AI-assisted financial reconciliation platform that automa
 
 **Trade Reconciliation** is a critical middle-office control that validates multiple representations of the same economic trade to ensure each trade is correctly recorded, accurately priced and properly settled.
 
-### Limitations of Traditional Reconciliation
-
 Traditional reconciliation platforms rely on:
 
 - Rigid ETL pipelines  
@@ -31,8 +29,6 @@ These approaches fail when:
 ## 🎯 Solution
 
 This system introduces a **runtime-driven reconciliation model** with strict authority separation.
-
-### Core Principles
 
 - No predefined internal canonical schema  
 - Central (internal) file defines schema at runtime  
@@ -151,6 +147,7 @@ AI failures never block deterministic reconciliation; AI steps degrade gracefull
 * **Deployment:** Vercel
 
 ---
+
 
 
 
