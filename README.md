@@ -1,6 +1,6 @@
 # AI-Powered Financial Trade Reconciliation
 
-A deterministic-first, AI-assisted financial reconciliation platform that automates the matching of trade records between internal booking systems and external brokers, custodians, and counterparties—while preserving **financial correctness, explainability, auditability, and explicit human control**.
+A deterministic-first, AI-assisted financial reconciliation platform that automates the matching of trade records between internal booking systems and external brokers, custodians, or counterparties—while preserving **financial correctness, explainability, auditability, and explicit human control**.
 
 ---
 
@@ -106,4 +106,5 @@ All features are stored for **replay and audit**.
 📌 AI failures or timeouts **gracefully degrade** to deterministic-only execution.
 
 ### 7️⃣ Hybrid Scoring (Confidence Only)
+
 
