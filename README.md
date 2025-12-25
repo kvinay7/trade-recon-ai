@@ -103,7 +103,7 @@ The system treats the internal file as truth, deterministically compares everyth
   - Which fields differ semantically
   - Potential mapping or data issues
 
-AI failure never block deterministic reconciliation; AI steps degrade gracefully to “no reasoning available.”
+AI failures never block deterministic reconciliation; AI steps degrade gracefully to “no reasoning available.”
 
 ---
 
@@ -151,5 +151,6 @@ AI failure never block deterministic reconciliation; AI steps degrade gracefully
 * **Deployment:** Vercel
 
 ---
+
 
 
