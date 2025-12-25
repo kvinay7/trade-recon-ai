@@ -6,11 +6,7 @@ A deterministic-first financial reconciliation platform that automates compariso
 
 ## 📖 Overview
 
-**Trade Reconciliation** is a critical middle-office control that validates multiple representations of the same economic trade to ensure each trade is:
-
-- Correctly recorded  
-- Accurately priced  
-- Properly settled  
+**Trade Reconciliation** is a critical middle-office control that validates multiple representations of the same economic trade to ensure each trade is correctly recorded, accurately priced, properly settled.
 
 This platform is intentionally designed as a **control system**, not an accounting, settlement, or posting engine.
 
@@ -202,4 +198,5 @@ Used only for:
 ---
 
 ## 📐 Development Philosophy
+
 
