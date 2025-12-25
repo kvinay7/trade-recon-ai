@@ -124,63 +124,27 @@ The canonical schema is a lossless, field-preserving projection of the central f
 
 ---
 
-## 🛠 Technology Stack
+## 🛠 Tech Stack
 
-### User Interface
-- HTML  
-- JavaScript  
+### Core Application
+* **Frontend:** HTML, JavaScript
+* **Backend:** Java, Spring Boot
+* **AI Engine:** Python, Flask
+* **Data Processing:** Pandas
+* **Storage:** SQL, NoSQL
 
-Used only for:
-- CSV uploads  
-- Selecting central file  
-- Triggering reconciliation runs  
-- Viewing results, reasoning, and audit details  
-
-⚠️ No business logic in UI.
-
----
-
-### Control & Reliability Layer
-- Java  
-- Spring Boot  
-
----
-
-### Reconciliation Engine
-- Python  
-- Flask  
-- Pandas  
-
----
-
-### AI/LLM Layer
-- LangChain  
-- LangGraph  
-
-Used only for:
-- Schema semantic understanding  
-- Field-mapping generation  
-- Ambiguous-case reasoning  
-
----
-
-### Storage
-- SQL (Supabase / Neon)  
-- Object Storage (S3 / MinIO)  
-
----
+### AI & Reasoning
+* **LLM Orchestration:** LangChain
+* **Inference & Embeddings:** TogetherAI
 
 ### Testing
 - pytest (Python)  
-- JUnit (Java)  
+- JUnit (Java)
+
+### Infrastructure & DevOps
+* **DevTools:** CodeRabbit
+* **CI/CD:** GitHub Actions
+* **Deployment:** Vercel
 
 ---
-
-### DevOps & Deployment
-- Docker  
-- GitHub Actions  
-- Free Cloud (Render / Railway / Fly.io)   
-
----
-
 
