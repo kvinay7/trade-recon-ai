@@ -1,40 +1,109 @@
-## AI-powered Trade Reconciliation Workbench
+# AI-Powered Financial Trade Reconciliation
 
-Today, reconciliation in financial institutions is slow, manual, error-prone, and completely non-standardized across systems.
-
-Our solution automates the entire workflow:
-  - Schema inference from raw files
-  - Auto-mapping of fields into a canonical model
-  - Data normalization across systems
-  - Deterministic matching to identify exact, partial, and unmatched trades
-  - And LLM-driven explanations that clearly tell the analyst why a break occurred and provide a confidence score.
-
-This reduces hours of manual work into seconds and brings explainability and control into reconciliation.
+A deterministic-first, AI-assisted financial reconciliation platform that automates the matching of trade records between internal booking systems and external brokers, custodians, and counterparties—while preserving **financial correctness, explainability, auditability, and explicit human control**.
 
 ---
 
-## How it works
+## 📖 Overview
 
-**1. Data Upload + Ingestion:** “As a first step, the analyst uploads multiple trade files from different systems. Our system doesn't require any predefined templates or mapping tables. It simply loads the datasets into an in-memory store.”
+Trade Reconciliation is a critical middle-office control that validates multiple representations of the same economic trade to ensure each trade is:
 
-**2. Canonical Schema Inference:** “When we pick the Golden Source, the LLM looks at just five sample rows and infers a canonical trade schema. This schema is used to normalize every other source without manual configuration.”
+- Correctly recorded  
+- Accurately priced  
+- Properly settled  
 
-**3. Column Mapping + Normalization:** “When we click Run Reconciliation, each source dataset is converted into the canonical model.”
+This platform is designed explicitly as a **control system**, **not** an accounting engine and **not** a settlement system.
 
-**4. Reconciliation Engine:** We categorize trades into three buckets:
-   - Exact Matches: clean alignment (Matches using deterministic hash lookups on primary key)
-   - Partial Matches: values differ (calls LLM for explanation)
-   - Unmatched: no corresponding trade found
+---
 
-**5. LLM Explainability:** The LLM compares the two records field-by-field and generates:
-   - a short explanations
-   - a yes/no/maybe verdict
-   - a confidence score
-   - a one-sentence summary
+## ❌ Limitations of Traditional Reconciliation
 
-**6. Human-in-the-Loop Analyst Workflow:** “We enforce mandatory analyst remarks. Every decision is stored in state and associated with that specific record. This brings accountability, auditability, and enables downstream compliance workflows.”
+Traditional reconciliation platforms rely on:
 
-**7. Final Export:** “At the end, analysts export a fully reconciled Excel report. This forms a ready-to-submit regulatory audit file.”
+- Rigid ETL pipelines  
+- Predefined schemas and static column mappings  
+- Rule engines requiring constant manual maintenance  
 
-**8. Closing Statement:** “Our solution delivers data harmonization, reconciliation, explainability, and auditability in one workflow. It dramatically reduces reconciliation time and increases middle-office accuracy.”
+These approaches fail when:
+
+- File formats or headers change  
+- Column names differ across counterparties  
+- Partial fills, allocations, or split trades occur  
+
+The result is **false breaks, analyst fatigue, delayed resolution, and high operational cost**.
+
+---
+
+## 🎯 Solution Summary
+
+This system introduces a **Hybrid Reconciliation Engine**:
+
+- Deterministic Rules: For high-speed, high-confidence exact matches.
+- LLM Fuzzy Reasoning: For complex exceptions, utilizing embeddings and contextual logic to resolve mismatches using contextual similarity comparable to analyst workflows.
+
+⚠️ AI outputs are **non-authoritative** and **advisory only**  
+
+---
+
+## ⚡ System Architecture
+
+Analyst
+|
+HTML + JavaScript UI (Presentation Only)
+|
+Spring Boot (Control & Reliability Layer)
+|
+Flask (Authoritative Reconciliation Engine)
+|
+SQL / Vector Store / Object Storage
+
+---
+
+## 🔁 End-to-End Workflow
+
+### 1️⃣ Ingest
+Analyst uploads one or more CSV files via browser UI.
+
+### 2️⃣ Control & Reliability Layer
+Responsibilities:
+- Request validation (size, format, auth)
+- Correlation ID generation & propagation
+- Retry, timeout, and circuit-breaker handling
+- Idempotency enforcement
+- Safe forwarding to reconciliation engine  
+
+🚫 No reconciliation or matching logic exists in this layer.
+
+### 3️⃣ Parse & Normalize (Flask + Pandas)
+- Schema-agnostic CSV ingestion  
+- Column name normalization  
+- Canonical internal schema mapping  
+- Type validation and coercion  
+
+📌 Input schemas are flexible; internal canonical schema is **strict and versioned**.
+
+### 4️⃣ Deterministic Matching (Authoritative)
+- Exact Trade ID matches  
+- Quantity tolerance checks  
+- Price tolerance checks  
+- Date drift handling  
+
+❌ Trades failing deterministic rules **cannot be auto-matched** under any circumstance.
+
+### 5️⃣ Feature Extraction (Observable & Auditable)
+- Quantity delta  
+- Price delta  
+- Date difference  
+- Symbol normalization score  
+
+All features are stored for **replay and audit**.
+
+### 6️⃣ AI-Assisted Fuzzy Matching (Restricted)
+- Embeddings computed on textual fields only  
+- Vector similarity scoring  
+- Optional LLM-generated explanation constrained to observable inputs  
+
+📌 AI failures or timeouts **gracefully degrade** to deterministic-only execution.
+
+### 7️⃣ Hybrid Scoring (Confidence Only)
 
