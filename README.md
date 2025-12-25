@@ -71,7 +71,9 @@ Responsibilities:
 
 - Extract central file schema + samples  
 - Generate runtime canonical schema via LLM  
-- Persist schema with run metadata  
+- Persist schema with run metadata
+
+The canonical schema is a lossless, field-preserving projection of the central file, with the LLM limited to naming, typing, and semantic labeling, not structural invention.
 
 ---
 
@@ -180,4 +182,5 @@ Used only for:
 - Free Cloud (Render / Railway / Fly.io)   
 
 ---
+
 
