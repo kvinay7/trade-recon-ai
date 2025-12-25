@@ -92,6 +92,8 @@ The canonical schema is a lossless, field-preserving projection of the central f
   - Unmatched  
   - Ambiguous
 
+The system treats the internal file as truth, deterministically compares everything else to it, and uses AI only to explain differences—not to decide outcomes.
+
 ---
 
 ### 6️⃣ AI-Assisted Reasoning for Ambiguous Cases
@@ -100,6 +102,8 @@ The canonical schema is a lossless, field-preserving projection of the central f
   - Why records did not match
   - Which fields differ semantically
   - Potential mapping or data issues
+
+AI failure never block deterministic reconciliation; AI steps degrade gracefully to “no reasoning available.”
 
 ---
 
@@ -147,4 +151,5 @@ The canonical schema is a lossless, field-preserving projection of the central f
 * **Deployment:** Vercel
 
 ---
+
 
