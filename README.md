@@ -129,7 +129,7 @@ AI failures never block deterministic reconciliation; AI steps degrade gracefull
 ### Core Application
 * **Frontend:** HTML, JavaScript
 * **Backend:** Java, Spring Boot
-* **AI Engine:** Python, Flask
+* **Core Engine:** Python, Flask
 * **Data Processing:** Pandas
 * **Storage:** SQL, NoSQL
 
@@ -147,7 +147,4 @@ AI failures never block deterministic reconciliation; AI steps degrade gracefull
 * **Deployment:** Vercel
 
 ---
-
-
-
 
