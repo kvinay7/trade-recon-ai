@@ -151,9 +151,9 @@ Used only for:
 
 ---
 
-### AI (Advisory Only)
+### AI/LLM Layer
 - LangChain  
-- TogetherAI  
+- LangGraph  
 
 Used only for:
 - Schema semantic understanding  
@@ -177,22 +177,7 @@ Used only for:
 ### DevOps & Deployment
 - Docker  
 - GitHub Actions  
-- Free Cloud (Render / Railway / Fly.io)  
+- Free Cloud (Render / Railway / Fly.io)   
 
 ---
-
-## 🧑‍💻 Development & Governance
-
-- PR-only merges  
-- CodeRabbit enforced  
-- CI gates mandatory  
-
----
-
-## 📐 Development Philosophy
-
-
-
-
-
 
