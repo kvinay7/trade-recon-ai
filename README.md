@@ -260,7 +260,7 @@ All actions are fully audited.
 
 ---
 
-## 🧱 Development Plan
+# Development Plan
 
 | EPIC | Status |
 |----|----|
@@ -276,4 +276,350 @@ All actions are fully audited.
 
 ---
 
+## EPIC 0 – Platform Setup & Foundations
 
+### Module Overview
+Set up the foundational repository structure, service boundaries, and local development environment.
+
+### Learning Prerequisites
+- Git & GitHub workflows  
+- HTTP & REST fundamentals
+- Docker basics
+- Maven & Python virtual environments  
+
+### Design
+- Mono-repo with clearly separated services  
+- Stateless services communicating over HTTP  
+- Environment-based configuration  
+- No shared runtime state  
+
+### Implementation
+- Initialize Git repository  
+- Spring Boot skeleton (`/health`)  
+- Flask skeleton (`/health`)  
+- Basic HTML upload page  
+- Dockerfiles for backend services  
+- Docker Compose for local development  
+
+### Testing
+- Spring Boot context load test  
+- Flask app startup test  
+- CI pipeline for build & test  
+
+### Review
+- Verify independent service startup  
+- Confirm no business logic exists yet  
+- Validate repo structure  
+
+### Deploy
+- Local deployment using Docker Compose  
+
+### Documentation
+- Repo structure overview  
+- Local setup instructions  
+- High-level architecture diagram  
+
+---
+
+## EPIC 1 – File Intake & Control Plane
+
+### Module Overview
+Implement a thin control plane responsible for request validation, idempotency, and orchestration.
+
+### Learning Prerequisites
+- REST API design  
+- Multipart file uploads  
+- Idempotency concepts  
+- Request validation  
+
+### Design
+- `POST /runs/start` endpoint  
+- Correlation ID generated per run  
+- Stateless request coordination  
+
+🚫 No CSV parsing  
+🚫 No AI usage  
+
+### Implementation
+- Multipart upload controller  
+- Correlation ID generator  
+- In-memory idempotency guard  
+- HTTP forwarding to reconciliation engine  
+
+### Testing
+- Missing file validation  
+- Duplicate request handling  
+- Downstream failure simulation  
+
+### Review
+- Ensure strict separation of concerns  
+- Validate stateless behavior  
+
+### Deploy
+- Containerized Spring Boot service  
+
+### Documentation
+- API contract  
+- Request/response examples  
+- Idempotency behavior  
+
+---
+
+## EPIC 2 – Schema-Agnostic CSV Ingestion
+
+### Module Overview
+Ingest CSV files without interpreting schema, meaning, or semantics.
+
+### Learning Prerequisites
+- Python file handling  
+- Pandas basics  
+- Hashing & metadata extraction  
+
+### Design
+- Read raw CSV bytes  
+- Preserve headers and row order  
+- Minimal sanitation only  
+- Content hashing  
+
+### Implementation
+- CSV ingestion utility  
+- Metadata model (headers, row count, hash)  
+- Deterministic ingestion behavior  
+
+### Testing
+- Valid CSV ingestion  
+- Header-only files  
+- Malformed CSV rejection  
+
+### Review
+- Confirm zero schema assumptions  
+- Validate deterministic behavior  
+
+### Deploy
+- Integrated into reconciliation engine  
+
+### Documentation
+- Ingestion guarantees  
+- Explicit non-goals  
+
+---
+
+## EPIC 3 – Central Schema Extraction
+
+### Module Overview
+Extract a mechanical, lossless schema from the central (internal) file.
+
+### Learning Prerequisites
+- Data profiling basics  
+- Type inference fundamentals  
+
+### Design
+- Extract:
+  - Column names  
+  - Best-effort inferred types  
+  - Nullability  
+  - Sample rows  
+- Central file only  
+
+### Implementation
+- Type inference logic  
+- Nullability detection  
+- Schema JSON model  
+
+### Testing
+- Mixed-type columns  
+- Null-heavy columns  
+- Numeric vs string detection  
+
+### Review
+- Ensure no semantic inference  
+- Validate schema reversibility  
+
+### Deploy
+- Integrated into ingestion pipeline  
+
+### Documentation
+- Schema format definition  
+- Example output  
+
+---
+
+## EPIC 4 – AI-Assisted Canonical Schema
+
+### Module Overview
+Use AI to improve schema readability without changing structure or authority.
+
+### Learning Prerequisites
+- Prompt engineering basics  
+- Structured output validation  
+- JSON schema validation  
+
+### Design
+- Input: mechanical schema  
+- Output: annotated canonical schema  
+- Enforced one-to-one column mapping  
+
+🚫 AI cannot add, remove, merge, or split columns  
+
+### Implementation
+- Prompt templates  
+- Output validation layer  
+- Fallback on invalid AI output  
+
+### Testing
+- Invalid AI responses  
+- Timeout handling  
+- Column count mismatch  
+
+### Review
+- Verify AI is non-authoritative  
+
+### Deploy
+- Feature-flag controlled AI usage  
+
+### Documentation
+- AI constraints  
+- Validation rules  
+
+---
+
+## EPIC 5 – External Schema Mapping
+
+### Module Overview
+Map external file schemas into the run-scoped canonical schema.
+
+### Learning Prerequisites
+- Mapping models  
+- Constraint validation  
+- Audit logging  
+
+### Design
+- AI-suggested mappings  
+- Manual override support  
+- Canonical schema immutability  
+
+### Implementation
+- Mapping engine  
+- Validation rules  
+- Override persistence with audit trail  
+
+### Testing
+- Missing required fields  
+- Duplicate mappings  
+- Manual override precedence  
+
+### Review
+- Confirm canonical schema cannot be modified  
+
+### Deploy
+- Integrated mapping flow  
+
+### Documentation
+- Mapping lifecycle  
+- Audit trail format  
+
+---
+
+## EPIC 6 – Deterministic Matching Engine
+
+### Module Overview
+Perform primary-key-only deterministic reconciliation.
+
+### Learning Prerequisites
+- Join algorithms  
+- Data comparison logic  
+
+### Design
+- PK-based join  
+- Field-by-field comparison  
+- Classified outcomes  
+
+🚫 No AI involvement  
+
+### Implementation
+- Matching service  
+- Result classification logic  
+
+### Testing
+- Duplicate PKs  
+- Missing PKs  
+- Field mismatch scenarios  
+
+### Review
+- Validate deterministic-only behavior  
+
+### Deploy
+- Full pipeline execution test  
+
+### Documentation
+- Matching rules  
+- Edge cases  
+
+---
+
+## EPIC 7 – AI-Assisted Explanations
+
+### Module Overview
+Generate human-readable explanations for mismatches without affecting results.
+
+### Learning Prerequisites
+- Diff generation  
+- Explainability principles  
+
+### Design
+- Triggered only for ambiguous/unmatched records  
+- Field-level diffs only  
+
+### Implementation
+- Diff generator  
+- Explanation prompt  
+- Safe fallback handling  
+
+### Testing
+- AI failure scenarios  
+- Explanation correctness  
+
+### Review
+- Confirm advisory-only role  
+
+### Deploy
+- Optional feature toggle  
+
+### Documentation
+- Explanation limits  
+- Sample outputs  
+
+---
+
+## EPIC 8 – Human Review & Reporting
+
+### Module Overview
+Final human authority layer for review, overrides, and reporting.
+
+### Learning Prerequisites
+- Basic frontend state handling  
+- Audit logging concepts  
+
+### Design
+- Review UI  
+- Override with justification  
+- Exportable reports  
+
+### Implementation
+- Review screens  
+- Override persistence  
+- CSV / Excel exports  
+
+### Testing
+- Audit trail validation  
+- Export correctness  
+
+### Review
+- Validate human authority boundaries  
+
+### Deploy
+- End-to-end demo run  
+
+### Documentation
+- User guide  
+- End-to-end flow diagram  
