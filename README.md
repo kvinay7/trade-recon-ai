@@ -46,9 +46,8 @@ This system introduces a **runtime-driven reconciliation model** with strict aut
 ---
 
 ## 🔁 Full End-to-End Workflow  
-**AI-Powered Financial Trade Reconciliation (Deterministic-First)**
 
-This workflow describes exactly what happens, in exact order, from the moment an analyst uploads files until results are reviewed, audited, and replayed.
+This workflow describes exactly what happens, in exact order, from the moment an analyst uploads files until results are reviewed and audited.
 
 ---
 
@@ -60,13 +59,6 @@ Before a reconciliation run starts, the analyst must provide:
   - Explicitly marked as source of truth
 - **One or More External Files**
   - Brokers / custodians / counterparties
-- **Primary Key Definition**
-  - Single key or composite key
-  - Must exist in the central file
-- **Run Metadata**
-  - Optional run name / notes
-
-📌 No assumptions are made about schemas, headers, formats, or column names.
 
 ---
 
@@ -311,7 +303,7 @@ If AI fails:
 
 ---
 
-### 1️⃣2️⃣ Reporting, Storage & Replay
+### 1️⃣2️⃣ Reporting & Storage
 
 **Reporting:**
 - CSV / Excel exports  
@@ -451,6 +443,8 @@ This execution strategy ensures:
 - High confidence during reviews, audits, and interviews
 
 This is how **financial-grade platforms** are built and maintained.
+
+---
 
 ## 🧩 EPICs / Modules to Implement
 
@@ -688,4 +682,5 @@ Each EPIC must:
 - Be **locked before moving on**
 
 This sequencing ensures **financial correctness, auditability, and long-term maintainability**.
+
 
