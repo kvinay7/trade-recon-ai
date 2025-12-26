@@ -51,17 +51,6 @@ This workflow describes exactly what happens, in exact order, from the moment an
 
 ---
 
-### 0️⃣ Pre-Run Inputs (Explicit & Mandatory)
-
-Before a reconciliation run starts, the analyst must provide:
-
-- **Central (Internal) File**
-  - Explicitly marked as source of truth
-- **One or More External Files**
-  - Brokers / custodians / counterparties
-
----
-
 ### 1️⃣ Ingest (UI → Control Plane)
 
 **Actor:** Analyst  
@@ -682,5 +671,6 @@ Each EPIC must:
 - Be **locked before moving on**
 
 This sequencing ensures **financial correctness, auditability, and long-term maintainability**.
+
 
 
