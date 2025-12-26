@@ -92,8 +92,7 @@ Before any processing:
   - No nulls
   - No duplicates
 
-❌ Failure → entire run fails  
-📌 No partial state is persisted
+❌ Failure → entire run fails, no partial state is persisted
 
 ---
 
@@ -116,7 +115,7 @@ For each file:
 
 ---
 
-### 5️⃣ Central Schema Extraction (Mechanical)
+### 5️⃣ Central Schema Extraction
 
 From the **central (internal) file only**:
 - Column names
@@ -124,8 +123,7 @@ From the **central (internal) file only**:
 - Nullability
 - First 5 sample rows
 
-🚫 No semantic interpretation  
-📌 Output is deterministic and lossless
+🚫 No semantic interpretation, output is deterministic and lossless
 
 ---
 
@@ -248,33 +246,21 @@ All actions are fully audited.
 
 ## 🛠 Tech Stack
 
-**Frontend**
-- HTML
-- JavaScript
+**Frontend**: HTML, JavaScript
 
-**Backend / Control Plane**
-- Java
-- Spring Boot
+**Backend**: Java, Spring Boot
 
-**Reconciliation Engine**
-- Python
-- Flask
-- Pandas
+**Engine**: Python, Flask, Pandas
 
-**AI**
-- LangChain
-- TogetherAI
+**AI/LLM**: LangChain, TogetherAI
 
-**Testing**
-- pytest
-- JUnit
+**Testing**: pytest, JUnit
 
-**CI/CD**
-- GitHub Actions
+**CI/CD**: GitHub Actions
 
 ---
 
-## 🧱 Development Plan (Implemented / Planned)
+## 🧱 Development Plan
 
 | EPIC | Status |
 |----|----|
@@ -289,4 +275,5 @@ All actions are fully audited.
 | EPIC 8 – Human Review UI | Planned |
 
 ---
+
 
