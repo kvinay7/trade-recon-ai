@@ -282,7 +282,7 @@ All actions are fully audited.
 Set up the foundational repository structure, service boundaries, and local development environment.
 
 ### Learning Prerequisites
-- linux, Git & GitHub workflows  
+- Linux, Git & GitHub workflows  
 - HTTP & REST fundamentals
 - Docker basics
 - Maven & Python virtual environments  
@@ -623,5 +623,6 @@ Final human authority layer for review, overrides, and reporting.
 ### Documentation
 - User guide  
 - End-to-end flow diagram  
+
 
 
