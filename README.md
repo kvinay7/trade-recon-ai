@@ -248,11 +248,11 @@ All actions are fully audited.
 
 **Frontend**: HTML, JavaScript
 
-**Backend**: Java, Spring Boot
+**Backend**: [Java](https://github.com/kvinay7/interview-preparation/blob/main/Java.md), Spring Boot
 
-**Engine**: Python, Flask, Pandas
+**Engine**: [Python](https://github.com/kvinay7/Programming-in-Python), [Flask](https://github.com/kvinay7/Flask-Learning), Pandas
 
-**AI/LLM**: LangChain, TogetherAI
+**AI/LLM**: [LangChain](https://docs.google.com/document/d/1qRp4PiRXZmBZd82tkhy_Ipdlmvbkj6bZwKqsPJao90c/edit?usp=sharing), TogetherAI
 
 **Testing**: pytest, JUnit
 
@@ -623,6 +623,7 @@ Final human authority layer for review, overrides, and reporting.
 ### Documentation
 - User guide  
 - End-to-end flow diagram  
+
 
 
 
