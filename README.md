@@ -42,12 +42,12 @@ This system introduces a **runtime-driven reconciliation model** with **strict a
 
 ## 🚫 Explicit Non-Goals
 
+These are **intentional trade-offs**:
+
 - No fuzzy or tolerance-based matching
 - No auto-approval by AI
 - No multi-format ingestion (CSV only)
 - No numeric inference by AI
-
-These are **intentional trade-offs**.
 
 ---
 
@@ -623,3 +623,4 @@ Final human authority layer for review, overrides, and reporting.
 ### Documentation
 - User guide  
 - End-to-end flow diagram  
+
