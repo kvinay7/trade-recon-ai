@@ -246,9 +246,9 @@ All actions are fully audited.
 
 ## 🛠 Tech Stack
 
-**Frontend**: HTML, JavaScript
+**Frontend**: HTML, CSS, JavaScript
 
-**Backend**: [Java](https://github.com/kvinay7/interview-preparation/blob/main/Java.md), Spring Boot
+**Backend**: [Java](https://github.com/kvinay7/interview-preparation/blob/main/Java.md), Spring Boot, SQL
 
 **Matching Engine**: [Python](https://github.com/kvinay7/Programming-in-Python), [Flask](https://github.com/kvinay7/Flask-Learning)
 
@@ -625,6 +625,7 @@ Final human authority layer for review, overrides, and reporting.
 ### Documentation
 - User guide  
 - End-to-end flow diagram  
+
 
 
 
