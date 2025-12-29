@@ -250,7 +250,9 @@ All actions are fully audited.
 
 **Backend**: [Java](https://github.com/kvinay7/interview-preparation/blob/main/Java.md), Spring Boot
 
-**Engine**: [Python](https://github.com/kvinay7/Programming-in-Python), [Flask](https://github.com/kvinay7/Flask-Learning), Pandas
+**Engine**: [Python](https://github.com/kvinay7/Programming-in-Python), [Flask](https://github.com/kvinay7/Flask-Learning)
+
+**Data Handling**: Pandas, NumPy
 
 **AI/LLM**: [LangChain](https://docs.google.com/document/d/1qRp4PiRXZmBZd82tkhy_Ipdlmvbkj6bZwKqsPJao90c/edit?usp=sharing), TogetherAI
 
@@ -372,7 +374,7 @@ Ingest CSV files without interpreting schema, meaning, or semantics.
 
 ### Learning Prerequisites
 - Python file handling  
-- Pandas basics  
+- Pandas & NumPy  
 - Hashing & metadata extraction  
 
 ### Design
@@ -623,6 +625,7 @@ Final human authority layer for review, overrides, and reporting.
 ### Documentation
 - User guide  
 - End-to-end flow diagram  
+
 
 
 
